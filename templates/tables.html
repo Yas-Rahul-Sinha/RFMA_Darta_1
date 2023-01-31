@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADVISOR DASHBOARD</title>
+</head>
+<body>
+<div>
+    <h1> ADVISOR DASHBOARD</h1>
+    <table border="5px">
+        <caption> Advisor name : {{advisor_name}}</caption>
+        <thead>
+        <tr>
+            <th>client list</th>
+            <th>$MM</th>
+            <th>Country</th>
+            <th>Risk profile</th>
+        </tr>
+         {% for client in advisor["Investor Name"] %}
+        <tr>
+            <th>{{ client }}</th>
+            <th>{{ advisor["Investor Name"][client]["Amount"] }}</th>
+            <th>{{ advisor["Investor Name"][client]["Currency"] }}</th>
+            <th>Risk profile</th>
+        </tr>
+        {% endfor %}
+        </thead>
+        <caption></caption>
+    </table>
+    <table border="5px">
+        <caption> Market Signal</caption>
+        <thead>
+        <tr>
+            <th>symbol</th>
+            <th>security description</th>
+            <th>New Preview</th>
+            <th>Date time</th>
+        </tr>
+        <tr>
+            <td>ALLY</td>
+            <td>Ally financial</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>ARKK</td>
+            <td>ARK innovation</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>BAM</td>
+            <td>Brookfield associate</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>BLK</td>
+            <td>BMY</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>BMY</td>
+            <td>Bristol-myers</td>
+            <td></td>
+            <td></td>
+        </tr>
+        </thead>
+    </table>
+    <table border="5px">
+        <caption> Client Escallation</caption>
+        <thead>
+        <tr>
+            <th>Client Name</th>
+            <th>Escallation</th>
+            <th>Reason</th>
+            <th>Date</th>
+        </tr>
+        {% for client in escalation %}
+        <tr>
+            <td>{{client["Investor Name"]}}</td>
+            <td>{{client["Type of Escalation"]}}</td>
+            <td>{{client["Reason"]}}</td>
+            <td>{{client["Scheduled Date"]}}</td>
+        </tr>
+        {% endfor %}
+        </thead>
+    </table>
+    <table border="5px">
+        <caption>Priority based on Customer Interactions CRM</caption>
+        <thead>
+        <tr>
+            <th>Client Name</th>
+            <th>Escallation</th>
+            <th>Reason</th>
+            <th>Date</th>
+        </tr>
+        {% for client in crm %}
+        <tr>
+            <td>{{client["Investor Name"]}}</td>
+            <td>{{client["Type of Escalation"]}}</td>
+            <td>{{client["Reason"]}}</td>
+            <td>{{client["Scheduled Date"]}}</td>
+        </tr>
+        {% endfor %}
+        </thead>
+    </table>
+</div>
+</body>
+</html>
+
