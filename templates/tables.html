@@ -5,11 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ADVISOR DASHBOARD</title>
+    <link rel="stylesheet" href="/static/styles.css" >
 </head>
 <body>
+<h1 class="heading"> ADVISOR DASHBOARD</h1>
+<div class="main_content">
 <div>
-    <h1> ADVISOR DASHBOARD</h1>
-    <table border="5px">
+    <table border="2px" id="client_data" class="dashboard_component">
         <caption> Advisor name : {{advisor_name}}</caption>
         <thead>
         <tr>
@@ -29,7 +31,7 @@
         </thead>
         <caption></caption>
     </table>
-    <table border="5px">
+    <table border="2px" id="market_signal" class="dashboard_component">
         <caption> Market Signal</caption>
         <thead>
         <tr>
@@ -38,39 +40,33 @@
             <th>New Preview</th>
             <th>Date time</th>
         </tr>
+        {% for security in market_news %}
+        {% if security["Impacts"] == "Very Positive" %}
+            {% set classs = "VP" %}
+        {% elif security["Impacts"] == "Very Negative" %}
+            {% set classs = "VN" %}
+        {% else %}
+            {% set classs = security["Impacts"] %}
+        {% endif %}
         <tr>
-            <td>ALLY</td>
-            <td>Ally financial</td>
-            <td></td>
-            <td></td>
+            <td>{{ security["SYMBOL"] }}</td>
+            <td>{{ security["Description"] }}</td>
+            <td class={{ classs }}>{{ security["Impacts"] }}</td>
+            <td>{{ security["Market News - Date"] }}</td>
         </tr>
-        <tr>
-            <td>ARKK</td>
-            <td>ARK innovation</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>BAM</td>
-            <td>Brookfield associate</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>BLK</td>
-            <td>BMY</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>BMY</td>
-            <td>Bristol-myers</td>
-            <td></td>
-            <td></td>
-        </tr>
+        {% endfor %}
         </thead>
     </table>
-    <table border="5px">
+    <style>
+        td.VP{background-color: #2cba00;}
+        td.Positive{background-color: #a3ff00;}
+        td.Negative{background-color: #fa8072;}
+        td.VN{background-color: #ff0000;}
+        td.Low{background-color: #ffb6c1;}
+        td.No{background-color: #ffbf00;}
+        td.Investment{background-color: #8b0000;}
+    </style>
+    <table border="2px" id="client_escalation" class="dashboard_component">
         <caption> Client Escallation</caption>
         <thead>
         <tr>
@@ -89,7 +85,7 @@
         {% endfor %}
         </thead>
     </table>
-    <table border="5px">
+    <table border="2px" id="crm" class="dashboard_component">
         <caption>Priority based on Customer Interactions CRM</caption>
         <thead>
         <tr>
@@ -109,6 +105,93 @@
         </thead>
     </table>
 </div>
+<div>
+    <table border="2px solid black"  class="prioritise">
+        <caption> Prioritize Customer Meetings</caption>
+            <tr>
+                <th>Date</th>
+                <th>Client Name</th>
+                <th>Contact Person</th>
+                <th>Contact Number</th>
+                <th>Reason</th>
+                <th>Client Portfolio</th>
+                <th>Portfolio Predictions</th>
+            </tr>
+            <tr>
+                <td>MM/DD/YYYY HH/MN/SC</td>
+                <td>Client Name</td>
+                <td>John Doe</td>
+                <td>+11234567890</td>
+                <td>Free text</td>
+                <td>client portfolio</td>
+                <td>Portfolio Predictions</td>
+                </tr>
+        <tr>
+            <td>MM/DD/YYYY HH/MN/SC</td>
+            <td>Client Name</td>
+            <td>John Doe</td>
+            <td>+11234567890</td>
+            <td>Free text</td>
+            <td>client portfolio</td>
+            <td>Portfolio Predictions</td>
+        </tr>
+        <tr>
+            <td>MM/DD/YYYY HH/MN/SC</td>
+            <td>Client Name</td>
+            <td>John Doe</td>
+            <td>+11234567890</td>
+            <td>Free text</td>
+            <td>client portfolio</td>
+            <td>Portfolio Predictions</td>
+        </tr>
+        <tr>
+            <td>MM/DD/YYYY HH/MN/SC</td>
+            <td>Client Name</td>
+            <td>John Doe</td>
+            <td>+11234567890</td>
+            <td>Free text</td>
+            <td>client portfolio</td>
+            <td>Portfolio Predictions</td>
+        </tr>
+        <tr>
+            <td>MM/DD/YYYY HH/MN/SC</td>
+            <td>Client Name</td>
+            <td>John Doe</td>
+            <td>+11234567890</td>
+            <td>Free text</td>
+            <td>client portfolio</td>
+            <td>Portfolio Predictions</td>
+        </tr>
+        <tr>
+            <td>MM/DD/YYYY HH/MN/SC</td>
+            <td>Client Name</td>
+            <td>John Doe</td>
+            <td>+11234567890</td>
+            <td>Free text</td>
+            <td>client portfolio</td>
+            <td>Portfolio Predictions</td>
+        </tr>
+        <tr>
+            <td>MM/DD/YYYY HH/MN/SC</td>
+            <td>Client Name</td>
+            <td>John Doe</td>
+            <td>+11234567890</td>
+            <td>Free text</td>
+            <td>client portfolio</td>
+            <td>Portfolio Predictions</td>
+        </tr>
+        <tr>
+            <td>MM/DD/YYYY HH/MN/SC</td>
+            <td>Client Name</td>
+            <td>John Doe</td>
+            <td>+11234567890</td>
+            <td>Free text</td>
+            <td>client portfolio</td>
+            <td>Portfolio Predictions</td>
+        </tr>
+        <tr>            <td>MM/DD/YYYY HH/MN/SC</td>            <td>Client Name</td>            <td>John Doe</td>            <td>+11234567890</td>            <td>Free text</td>            <td>client portfolio</td>            <td>Portfolio Predictions</td>        </tr>        </thead>    </table>
+</div>
+    </div>
 </body>
 </html>
 

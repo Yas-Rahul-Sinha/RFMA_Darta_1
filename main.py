@@ -19,7 +19,7 @@ for port in portfolios:
     if math.isnan(portfolios[port]["Market Value"]):
         portfolios[port]["Market Value"] = 0
 portfolios = portfolios.transpose()
-print(portfolios["Market Value"][5])
+# print(portfolios["Market Value"][5])
 import dataframe_image as dfi
 # portfolio = pd.read_excel('WM Manager Dashboard Data SetV2.xlsx', sheet_name='Portfolio', usecols=[0, 1, 5, 11])
 temp = portfolios.Advisor[0]
@@ -55,7 +55,8 @@ for ind in portfolios.Advisor:
 
     iterator += 1
 # for i in advisor["Advisor 1 "]["Investor Name"]:
-    # print(advisor["Advisor 1 "]["Investor Name"][i]["Currency"])
+#     print(i)
+
 with open('all_dfs.csv','a') as f:
     for adv in advisor:
         f.write(adv)
