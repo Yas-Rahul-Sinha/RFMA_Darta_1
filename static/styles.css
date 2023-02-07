@@ -1,0 +1,21 @@
+.main_content{
+    display:flex;
+    justify-content: space-between;
+}
+.heading{
+    display: flex;
+    justify-content: center;
+    background-color: blue;
+}
+.dashboard_component{
+    width: 46vw;
+    height: 30vh;
+    overflow-y: scroll;
+}
+.prioritise{
+    width: 50vw;
+}
+#market_signal{
+    height: 30vh;
+    overflow-y: auto;
+}

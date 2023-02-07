@@ -47,6 +47,29 @@ def typeSelect():
 
 @app.route('/market_signal_impact/param/result', methods=['POST', 'GET'])
 def result():
+    # content_type = request.headers.get('Content-Type')
+    # if (content_type == 'application/json'):
+    #     json = request.json
+    #     print(json)
+    #     return json
+    # else:
+    #     return 'Content-Type not supported!'
+    # individual_data = {}
+    # input = {}
+    # for i in json.post:
+    #     current_market_value = fetchMarketValue(json.post[i].client,unquote(json.post[i].instrument))
+    #     new_market_value = calculateMarketValue(json.post[i].client,unquote(json.post[i].instrument),json.post[i].input)
+    #     total_book_value = totalBookValue(json.post[i].client)
+    #     total_market_value = totalMarketValue(json.post[i].client)
+    #     new_total_market_value = newTotalMarketValue(json.post[i].client,unquote(json.post[i].instrument),json.post[i].input)
+    #     analysis = clientTotalValueAnalysis(total_book_value, total_market_value, new_total_market_value)
+    #     temp = {'current_market_value':current_market_value, 'new_market_value':new_market_value, 'total_book_value':total_book_value, 'total_market_value':total_market_value, 'new_total_market_value':new_total_market_value, 'analysis':analysis }
+    #     individual_data[unquote(json.post[i].instrument)] = temp
+    #     input[unquote(json.post[i].instrument)] = json.post[i].input
+    # overall_data = overallCalculations(json.post)
+    # return render_template('result.html', input=input, client=json.post[0].client ,individual_data=individual_data, overall_data=overall_data)
+    # if request.method == "GET":
+    #     return render_template('result.html', input=input, client=json.post[0].client, individual_data=individual_data, overall_data=overall_data)
     client = request.form['client']
     instrument = unquote(request.form['instrument'])
     value = request.form['input_data']
@@ -57,6 +80,6 @@ def result():
     new_total_market_value = newTotalMarketValue(client,instrument,value)
     analysis = clientTotalValueAnalysis(total_book_value,total_market_value,new_total_market_value)
     print(analysis)
-    return render_template('result.html', current_market_value=current_market_value, new_market_value=new_market_value, total_book_value=total_book_value, total_market_value=total_market_value, new_total_market_value=new_total_market_value, analysis=analysis)
+    return render_template('result.html', input=value, instrument=instrument, client=client, current_market_value=current_market_value, new_market_value=new_market_value, total_book_value=total_book_value, total_market_value=total_market_value, new_total_market_value=new_total_market_value, analysis=analysis)
 
 
