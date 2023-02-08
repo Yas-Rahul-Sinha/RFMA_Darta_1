@@ -23,7 +23,7 @@ for advisor in adv_market_temp:
                 temp.append(market[sec])
     adv_market[advisor] = temp.copy()
     temp.clear()
-print(adv_market["Advisor 1 "])
+# print(adv_market["Advisor 1 "])
 
 
 

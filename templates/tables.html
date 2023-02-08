@@ -17,20 +17,67 @@
         <tr>
             <th>client list</th>
             <th>$MM</th>
+            <th>Book Value</th>
             <th>Country</th>
             <th>Risk profile</th>
         </tr>
          {% for client in advisor["Investor Name"] %}
         <tr>
             <th>{{ client }}</th>
-            <th>{{ advisor["Investor Name"][client]["Amount"] }}</th>
+            <th>{{ '%0.2f'|format(advisor["Investor Name"][client]["Amount"]|float) }}</th>
+            <th>{{ '%0.2f'|format(advisor["Investor Name"][client]["Book Value"]|float) }}</th>
             <th>{{ advisor["Investor Name"][client]["Currency"] }}</th>
             <th>Risk profile</th>
         </tr>
         {% endfor %}
         </thead>
-        <caption></caption>
     </table>
+    <ul class="Legend">
+        <caption> Color Code </caption>
+  <li class="Legend-item">
+    <span class="Legend-colorBox" style="background-color: #2cba00;">
+    </span>
+    <span class="Legend-label">
+      Very Positive
+    </span>
+  </li><li class="Legend-item">
+    <span class="Legend-colorBox" style="background-color: #a3ff00;">
+    </span>
+    <span class="Legend-label">
+       Positive
+    </span>
+  </li><li class="Legend-item">
+    <span class="Legend-colorBox" style="background-color: #fa8072;">
+    </span>
+    <span class="Legend-label">
+       Negative
+    </span>
+  </li><li class="Legend-item">
+    <span class="Legend-colorBox" style="background-color: #ff0000;">
+    </span>
+    <span class="Legend-label">
+       Very Negative
+    </span>
+  </li><li class="Legend-item">
+    <span class="Legend-colorBox" style="background-color: #ffb6c1;">
+    </span>
+    <span class="Legend-label">
+       Low Impact
+    </span>
+  </li><li class="Legend-item">
+    <span class="Legend-colorBox" style="background-color: #ffbf00;">
+    </span>
+    <span class="Legend-label">
+       No Impact
+    </span>
+  </li><li class="Legend-item">
+    <span class="Legend-colorBox" style="background-color: #8b0000;">
+    </span>
+    <span class="Legend-label">
+       Investment Review Required
+    </span>
+  </li>
+</ul>
     <table border="2px" id="market_signal" class="dashboard_component">
         <caption> Market Signal</caption>
         <thead>

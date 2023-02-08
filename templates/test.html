@@ -23,10 +23,10 @@
                     </div>
                     <button type="button" id="add">Add</button>
                 </form>
-                <div id="display-added">
+            <form action="/market_signal_impact/param/result" id="display-added" method="post">
+                <fieldset id="display-options">
 
-                </div>
-            <form action="/market_signal_impact/param/result">
+                </fieldset>
                 <input type="submit" id="submit" value="Submit">
             </form>
 
@@ -45,7 +45,7 @@
                 response.json().then((data) => {
                     let optionHTML = ''
                     for (let inv in data.client) {
-                        optionHTML += "<option value=" + encodeURIComponent(data.client[inv].Description) + ">" + data.client[inv].Description + "</option>"
+                        optionHTML += "<option value=" + encodeURIComponent(data.client[inv].Description) + ">" + data.client[inv].Description + " (" + data.client[inv]["Portfolio Weightage"] + ")</option>"
                     }
                     instrument.innerHTML = optionHTML;
                 })
@@ -70,7 +70,7 @@
         }
         let post_data = [];
         let add = document.getElementById('add');
-        let display = document.getElementById('display-added');
+        let display = document.getElementById('display-options');
         let submit = document.getElementById('submit')
         add.onclick = () => {
             let input_data = document.getElementById('input_data').value
@@ -85,23 +85,10 @@
             }
             let displayHTML = ""
             for (let j in post_data) {
-                let str = "<div> client:" + post_data[j].client + "  instrument:" + post_data[j].instrument + "  input:" + post_data[j].input + "</div>"
+                let str = "<input readonly name='"+ encodeURIComponent(post_data[j].instrument) + "'" + `value="{'client':` + "'"+ post_data[j].client + "'" + ",  'instrument':" + "'" + decodeURIComponent(post_data[j].instrument) + "'" + ",  'input':" + "'" + post_data[j].input + "'" + '}">'
                 displayHTML += str
             }
             display.innerHTML = displayHTML;
-        }
-        submit.onclick = () => {
-            let post = {"post":post_data}
-            fetch('/market_signal_impact/param/result', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(post)
-            })
-                .then(response => response.json())
-                .then(response =>  console.log(response))
         }
 
     </script>

@@ -1,3 +1,5 @@
+@use postcss-custom-media;
+@use postcss-nested;
 .main_content{
     display:flex;
     justify-content: space-between;
@@ -18,4 +20,18 @@
 #market_signal{
     height: 30vh;
     overflow-y: auto;
+}
+.Legend-colorBox {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: inline-block;
+    background-color: blue;
+}
+.Legend{
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 33.333333%;
+    justify-content: space-between;
+    padding-left: 0;
 }

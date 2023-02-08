@@ -43,7 +43,7 @@
                 response.json().then((data)=>{
                     let optionHTML = ''
                     for(let inv in data.client){
-                        optionHTML += "<option value=" + encodeURIComponent(data.client[inv].Description) + ">" + data.client[inv].Description + "</option>"
+                        optionHTML += "<option value=" + encodeURIComponent(data.client[inv].Description) + ">" + data.client[inv].Description + " (" + data.client[inv]["Portfolio Weightage"] + ")</option>"
                     }
                     instrument.innerHTML = optionHTML;
                 })
