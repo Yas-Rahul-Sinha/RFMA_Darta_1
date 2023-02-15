@@ -27,27 +27,23 @@ temp.clear()
 temp2 = {}
 temp3 = {}
 for adv in advisor:
-    for advClients in advisor[adv]['Investor Name']:
+    for advClients in advisor[adv]['Investor']:
         for client in clientlist:
             if client['Investor Name'] == advClients:
-                temp.append(client)
+                temp4 = client.to_dict()
+                temp4['Scheduled Date'] = str(temp4['Scheduled Date'])
+                temp.append(temp4)
     temp2[adv] = temp.copy()
     temp.clear()
 for adv in advisor:
-    for advClients in advisor[adv]['Investor Name']:
+    for advClients in advisor[adv]['Investor']:
         for client in crm:
             if client['Investor Name'] == advClients:
-                temp.append(client)
+                temp4 = client.to_dict()
+                temp4['Scheduled Date'] = str(temp4['Scheduled Date'])
+                temp.append(temp4)
     temp3[adv] = temp.copy()
     temp.clear()
+
 # for i in temp2["Advisor 1 "]:
 #     print(i)
-# with open('all_dfs.csv','a') as f:
-#     f.write('\n')
-#     f.write('\033[1m Client Escalation \033[0m')
-#     for i in temp2:
-#         f.write('\n')
-#         f.write(i)
-#         f.write('\n')
-#         out = pd.DataFrame(data = temp2[i])
-#         out.to_csv(f,lineterminator='\n',columns=['Investor Name', 'Type of Escalation', 'Reason', 'Scheduled Date'], index=False)

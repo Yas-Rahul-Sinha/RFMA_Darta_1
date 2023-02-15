@@ -78,3 +78,9 @@ def fetchMarketValuePercentage(client, instrument):
     totalMV = totalMarketValue(client)
     instrumentMV = fetchMarketValue(client,instrument)
     return round(((instrumentMV/totalMV)*100),2)
+
+def percentageImpact(market_value, projected_value):
+    if market_value != 0:
+        return round((((projected_value-market_value)/market_value)*100),2)
+    else:
+        return 0

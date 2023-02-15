@@ -39,7 +39,7 @@ for ind in portfolios.Advisor:
         temp2 = portfolios["Investor Name"][iterator]
         martSum = round(portfolios["Market Value"][iterator],2)
         bookSum = round(portfolios["Account Investment Book Value"][iterator],2)
-        advisor.update({temp:{'Investor Name': investor.copy()}})
+        advisor.update({temp:{'Investor': investor.copy()}})
         # print(advisor)
         temp = ind
         # print(temp)
@@ -58,16 +58,4 @@ for ind in portfolios.Advisor:
             # print(bookSum)
 
     iterator += 1
-# for i in advisor["Advisor 1 "]["Investor Name"]:
-#     print(i)
-
-with open('all_dfs.csv','a') as f:
-    for adv in advisor:
-        f.write(adv)
-        f.write('\n')
-        f.write('\n')
-        for inv in advisor[adv]:
-            f.write(inv)
-            out = pd.DataFrame(data=advisor[adv][inv]).transpose()
-            out.to_csv(f, index='true', lineterminator='\n')
-        f.write('\n')
+# print(len(portfolios["Investor Name"]))
