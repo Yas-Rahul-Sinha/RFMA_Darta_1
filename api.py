@@ -57,11 +57,16 @@ class MarketSignalImpact(Resource):
             response[j['instrument']] = temp.copy()
         return response
 
+class ClientInstrumentData(Resource):
+    def get(self,adv):
+        return adv_investor_investments[adv]
+
 api.add_resource(ClientList, '/<string:adv>/clientList')
 api.add_resource(MarketNews, '/<string:adv>/marketNews')
 api.add_resource(ClientEscalation, '/<string:adv>/clientEscalation')
 api.add_resource(CRM, '/<string:adv>/CRM')
 api.add_resource(PortfolioData, '/portfolioData/<string:adv>/<string:client>/<int:account>')
 api.add_resource(MarketSignalImpact, '/marketSignalImpact')
+api.add_resource(ClientInstrumentData, '/clientInstrumentData/<string:adv>')
 if __name__ == '__main__':
     app.run(debug=True)

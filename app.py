@@ -86,3 +86,5 @@
 #     # return render_template('result.html', input=value, instrument=instrument, client=client, current_market_value=current_market_value, new_market_value=new_market_value, total_book_value=total_book_value, total_market_value=total_market_value, new_total_market_value=new_total_market_value, analysis=analysis)
 #
 #
+# temp = {"data":[{"investor":"AARON SPELLING TRUST CHARLIE & BOSLEY", "instrument":"Gala USD", "value":"25%"},{"investor":"AARON SPELLING TRUST CHARLIE & BOSLEY", "instrument":"Shell plc", "value":"20%"}]}
+# print(list(temp.keys())[0])
