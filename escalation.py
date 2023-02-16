@@ -27,23 +27,23 @@ temp.clear()
 temp2 = {}
 temp3 = {}
 for adv in advisor:
-    for advClients in advisor[adv]['Investor']:
+    for advClients in advisor[adv]:
         for client in clientlist:
-            if client['Investor Name'] == advClients:
+            if client['Investor Name'] == advClients["Investor"]:
                 temp4 = client.to_dict()
                 temp4['Scheduled Date'] = str(temp4['Scheduled Date'])
                 temp.append(temp4)
     temp2[adv] = temp.copy()
     temp.clear()
 for adv in advisor:
-    for advClients in advisor[adv]['Investor']:
+    for advClients in advisor[adv]:
         for client in crm:
-            if client['Investor Name'] == advClients:
+            if client['Investor Name'] == advClients["Investor"]:
                 temp4 = client.to_dict()
                 temp4['Scheduled Date'] = str(temp4['Scheduled Date'])
                 temp.append(temp4)
     temp3[adv] = temp.copy()
     temp.clear()
 
-# for i in temp2["Advisor 1 "]:
-#     print(i)
+for i in temp3["Advisor 1 "]:
+    print(i)

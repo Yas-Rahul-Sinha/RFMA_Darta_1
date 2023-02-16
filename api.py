@@ -20,7 +20,7 @@ post_data.add_argument('data',action='append',help='Array of objects containing 
 
 class ClientList(Resource):
     def get(self, adv):
-        return advisor[adv]
+        return {adv: advisor[adv]}
 
 class MarketNews(Resource):
     def get(self, adv):
