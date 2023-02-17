@@ -13,6 +13,7 @@ def getAccountPortfolio(advisor, investor, account):
     print(projection)
     temp = {}
     portfolio_data = {}
+    temp2 = []
     index = 0
     total_market_value = 0
     total_projected_value = 0
@@ -30,7 +31,8 @@ def getAccountPortfolio(advisor, investor, account):
         else:
             temp['Up/Down'] = 'No Impact'
         temp['Percentage_Impact'] = percentageImpact(temp['Market_Value'], temp['Projected_Value'])
-        portfolio_data[i['Description']] = temp.copy()
+        # portfolio_data[i['Description']] = temp.copy()
+        temp2.append(temp.copy())
         total_market_value += temp['Market_Value']
         total_projected_value += temp['Projected_Value']
         index+=1
@@ -46,7 +48,9 @@ def getAccountPortfolio(advisor, investor, account):
     temp['Projected_Value'] = total_projected_value
     temp['Up/Down'] = updn
     temp['Percentage_Impact'] = percentageImpact(total_market_value, total_projected_value)
-    portfolio_data["Total"] = temp.copy()
+    temp2.append(temp.copy())
+
+    portfolio_data["data"] = temp2.copy()
     return portfolio_data
 
 

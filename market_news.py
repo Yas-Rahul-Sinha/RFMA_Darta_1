@@ -20,11 +20,11 @@ for advisor in adv_market_temp:
     for security in adv_market_temp[advisor]:
         for sec in market:
             if market[sec]["Description"] == security:
-                market[sec]["Market_News-Date"] = str(market[sec]["Market_News-Date"])
+                market[sec]["Market_News_Date"] = str(market[sec]["Market_News_Date"])
                 temp.append(market[sec].to_dict())
     adv_market[advisor] = temp.copy()
     temp.clear()
-# print(adv_market['Advisor 1 '])
+print(adv_market['Advisor 1'])
 
 
 
