@@ -4,9 +4,9 @@ from main import portfolios
 #     print(i)
 def fetchMarketValue(client, instrument):
     index = 0
-    for cli in portfolios["Investor Name"]:
-        if cli == client and portfolios["Security Description"][index] == instrument:
-            return round(portfolios["Market Value"][index],2)
+    for cli in portfolios["Investor_Name"]:
+        if cli == client and portfolios["Security_Description"][index] == instrument:
+            return round(portfolios["Market_Value"][index],2)
         index+=1
 
 
@@ -14,8 +14,8 @@ def calculateMarketValue(client, instrument, input):
     index = 0
     type = input.split('%')
     current_market_value = fetchMarketValue(client, instrument)
-    for cli in portfolios["Investor Name"]:
-        if cli == client and portfolios["Security Description"][index] == instrument:
+    for cli in portfolios["Investor_Name"]:
+        if cli == client and portfolios["Security_Description"][index] == instrument:
             if len(type) == 1:
                 return round(current_market_value + float(input),2)
             elif len(type) == 2:
@@ -27,18 +27,18 @@ def calculateMarketValue(client, instrument, input):
 def totalMarketValue(client):
     total_market_value = 0
     index=0
-    for cli in portfolios["Investor Name"]:
+    for cli in portfolios["Investor_Name"]:
         if cli == client:
-            total_market_value += portfolios["Market Value"][index]
+            total_market_value += portfolios["Market_Value"][index]
         index+=1
     return round(total_market_value,2)
 
 def totalBookValue(client):
     total_book_value = 0
     index = 0
-    for cli in portfolios["Investor Name"]:
+    for cli in portfolios["Investor_Name"]:
         if cli == client:
-            total_book_value += portfolios["Account Investment Book Value"][index]
+            total_book_value += portfolios["Account_Investment_Book_Value"][index]
         index += 1
     return round(total_book_value,2)
 

@@ -1,5 +1,5 @@
 import ast
-
+from flask_cors import CORS
 from flask import Flask, jsonify
 from flask_restful import Resource,Api,reqparse,abort
 
@@ -13,7 +13,16 @@ from client_instrument import adv_investor_investments
 from datautil import *
 
 app = app = Flask(__name__)
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 api = Api(app)
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return response
+
 
 post_data = reqparse.RequestParser()
 post_data.add_argument('data',action='append',help='Array of objects containing relevent information', required=True)
@@ -45,12 +54,12 @@ class MarketSignalImpact(Resource):
         args = post_data.parse_args()
         for i in args["data"]:
             j = ast.literal_eval(i)
-            temp["Existing Value"] = fetchMarketValue(j["investor"], j["instrument"])
-            temp["Projected Value"] = calculateMarketValue(j["investor"], j["instrument"], j["value"])
-            temp["Percentage Impact"] = percentageImpact(temp["Existing Value"], temp["Projected Value"])
-            if temp["Existing Value"] > temp["Projected Value"]:
+            temp["Existing_Value"] = fetchMarketValue(j["investor"], j["instrument"])
+            temp["Projected_Value"] = calculateMarketValue(j["investor"], j["instrument"], j["value"])
+            temp["Percentage_Impact"] = percentageImpact(temp["Existing_Value"], temp["Projected_Value"])
+            if temp["Existing_Value"] > temp["Projected_Value"]:
                 temp["Up/Down"] = "Down"
-            elif temp["Existing Value"] < temp["Projected Value"]:
+            elif temp["Existing_Value"] < temp["Projected_Value"]:
                 temp["Up/Down"] = "Up"
             else:
                 temp["Up/Down"] = "No Impact"

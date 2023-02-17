@@ -11,16 +11,16 @@ temp3 = {}
 for adv in advisor:
     for inv in advisor[adv]:
         index = 0
-        for investor in portfolios["Investor Name"]:
+        for investor in portfolios["Investor_Name"]:
             if inv["Investor"] == investor:
-                temp2["Instrument_Type"] = portfolios["Instrument Type"][index]
-                temp2["Description"] = portfolios["Security Description"][index]
+                temp2["Instrument_Type"] = portfolios["Instrument_Type"][index]
+                temp2["Description"] = portfolios["Security_Description"][index]
                 temp2["Units"] = portfolios["Units"][index]
-                temp2["Market Value"] = round(portfolios["Market Value"][index],2)
-                temp2["Book Value"] = round(portfolios["Account Investment Book Value"][index],2)
-                temp2["Portfolio Weightage"] = fetchMarketValuePercentage(inv["Investor"], portfolios["Security Description"][index])
+                temp2["Market_Value"] = round(portfolios["Market_Value"][index],2)
+                temp2["Book_Value"] = round(portfolios["Account_Investment_Book_Value"][index],2)
+                temp2["Portfolio_Weightage"] = fetchMarketValuePercentage(inv["Investor"], portfolios["Security_Description"][index])
                 temp2["Account"] = portfolios["Account"][index]
-                if index == len(portfolios["Investor Name"])-1:
+                if index == len(portfolios["Investor_Name"])-1:
                     temp1.append(temp2.copy())
                     temp3[temp2["Account"]] = temp1.copy()
                     temp1.clear()
@@ -35,7 +35,7 @@ for adv in advisor:
         temp3.clear()
     adv_investor_investments[adv] = investor_investments.copy()
     investor_investments.clear()
-print(adv_investor_investments['Advisor 1 '])
+# print(adv_investor_investments['Advisor 1 '])
 # for i in adv_investor_investments["Advisor 1 "]:
 #     print(i)
 

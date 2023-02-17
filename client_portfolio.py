@@ -20,19 +20,19 @@ def getAccountPortfolio(advisor, investor, account):
     for i in adv_investor_investments[advisor][investor][account]:
         temp['Description'] = i['Description']
         temp['Instrument_Type'] = i['Instrument_Type']
-        temp['Market Value'] = i['Market Value']
+        temp['Market_Value'] = i['Market_Value']
         # print(str(projection[index])+'%')
-        temp['Projected Value'] = calculateMarketValue(investor, i['Description'], str(projection[index])+'%')
-        if temp['Market Value'] > temp['Projected Value']:
+        temp['Projected_Value'] = calculateMarketValue(investor, i['Description'], str(projection[index])+'%')
+        if temp['Market_Value'] > temp['Projected_Value']:
             temp['Up/Down'] = 'Down'
-        elif temp['Market Value'] < temp['Projected Value']:
+        elif temp['Market_Value'] < temp['Projected_Value']:
             temp['Up/Down'] = 'Up'
         else:
             temp['Up/Down'] = 'No Impact'
-        temp['Percentage Impact'] = percentageImpact(temp['Market Value'], temp['Projected Value'])
+        temp['Percentage_Impact'] = percentageImpact(temp['Market_Value'], temp['Projected_Value'])
         portfolio_data[i['Description']] = temp.copy()
-        total_market_value += temp['Market Value']
-        total_projected_value += temp['Projected Value']
+        total_market_value += temp['Market_Value']
+        total_projected_value += temp['Projected_Value']
         index+=1
     if total_projected_value > total_market_value:
         updn = 'Up'
@@ -42,10 +42,10 @@ def getAccountPortfolio(advisor, investor, account):
         updn = "No Impact"
     temp['Description'] = "Total"
     temp['Instrument_Type'] = "Total"
-    temp['Market Value'] = total_market_value
-    temp['Projected Value'] = total_projected_value
+    temp['Market_Value'] = total_market_value
+    temp['Projected_Value'] = total_projected_value
     temp['Up/Down'] = updn
-    temp['Percentage Impact'] = percentageImpact(total_market_value, total_projected_value)
+    temp['Percentage_Impact'] = percentageImpact(total_market_value, total_projected_value)
     portfolio_data["Total"] = temp.copy()
     return portfolio_data
 
