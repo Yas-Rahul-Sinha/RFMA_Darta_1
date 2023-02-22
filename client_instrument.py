@@ -35,8 +35,8 @@ for adv in advisor:
         temp3.clear()
     adv_investor_investments[adv] = investor_investments.copy()
     investor_investments.clear()
-# print(adv_investor_investments['Advisor 1 '])
-# for i in adv_investor_investments["Advisor 1 "]:
+# print(adv_investor_investments)
+# for i in adv_investor_investments["Advisor 1"]:
 #     print(i)
 
 

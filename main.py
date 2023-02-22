@@ -34,7 +34,7 @@ iterator = 0
 for ind in portfolios.Advisor:
     if ind != temp or iterator == rows-1:
         # print(ind != temp)
-        investor.append({"Investor":temp2,"Book_Value": bookSum, "MM": martSum, "Country_of_Domicile": portfolios["Account_Currency"][iterator]})
+        investor.append({"Investor":temp2,"Book_Value": round(bookSum,2), "MM": round(martSum,2), "Country_of_Domicile": portfolios["Account_Currency"][iterator]})
         temp2 = portfolios["Investor_Name"][iterator]
         martSum = round(portfolios["Market_Value"][iterator],2)
         bookSum = round(portfolios["Account_Investment_Book_Value"][iterator],2)
@@ -46,7 +46,7 @@ for ind in portfolios.Advisor:
     elif ind == temp:
         if temp2 != portfolios["Investor_Name"][iterator]:
             # print(temp2)
-            investor.append({"Investor": temp2, "Book_Value": bookSum, "MM": martSum,"Country_of_Domicile": portfolios["Account_Currency"][iterator]})
+            investor.append({"Investor":temp2,"Book_Value": round(bookSum,2), "MM": round(martSum,2), "Country_of_Domicile": portfolios["Account_Currency"][iterator]})
             temp2 = portfolios["Investor_Name"][iterator]
             # print(investor)
             martSum = round(portfolios["Market_Value"][iterator],2)
@@ -57,5 +57,5 @@ for ind in portfolios.Advisor:
             # print(bookSum)
 
     iterator += 1
-# for i in advisor["Advisor 1 "]:
+# for i in advisor["Advisor 1"]:
 #     print(i)

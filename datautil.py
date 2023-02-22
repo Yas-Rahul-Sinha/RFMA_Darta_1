@@ -84,3 +84,42 @@ def percentageImpact(market_value, projected_value):
         return round((((projected_value-market_value)/market_value)*100),2)
     else:
         return 0
+
+def getClientForInstrument(instrument, advisor):
+    filter_df = portfolios[portfolios["Security_Description"] == instrument]
+    filter_df = filter_df[filter_df["Advisor"] == advisor]
+    # print(filter_df[["Investor_Name","Investor_Type_Desc","Account","Security_Description", "Account_Investment_Book_Value", "Market_Value"]])
+    return filter_df[["Investor_Name","Investor_Type_Desc","Account","Security_Description", "Account_Investment_Book_Value", "Market_Value"]]
+
+def impactOnAccount(account, instrument, projected_market_value):
+    data = portfolios[portfolios["Account"] == account]
+    index = data.index
+    total_market_value = data["Market_Value"].sum()
+    currrent_market_value = fetchMarketValue(data["Investor_Name"][index[0]],instrument)
+    diff = projected_market_value - currrent_market_value
+    percentage_impact = (diff/total_market_value)*100
+    return round(percentage_impact,3)
+def marketSignalImpact(instrument, advisor, input):
+    data = getClientForInstrument(instrument,advisor)
+    index = data.index
+    pointer = 0
+    temp = {}
+    return_data = []
+    for i in data["Investor_Name"]:
+        projected_value = calculateMarketValue(i, instrument, input)
+        if projected_value > data["Market_Value"][index[pointer]]:
+            up_down = "Up"
+        elif projected_value < data["Market_Value"][index[pointer]]:
+            up_down = "Down"
+        else:
+            up_down = "No Impact"
+        percentage_impact = impactOnAccount(data["Account"][index[pointer]],instrument,projected_value)
+        temp["Investor_Name"] = i
+        temp["Account"] = data["Account"][index[pointer]]
+        temp["Market_Value"] = data["Market_Value"][index[pointer]]
+        temp["Projected_Value"] = projected_value
+        temp["Up/Down"] = up_down
+        temp["Percentage_Impact"] = percentage_impact
+        return_data.append(temp.copy())
+        pointer+=1
+    return {"data": return_data}
