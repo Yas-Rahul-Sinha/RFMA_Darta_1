@@ -25,12 +25,12 @@ def getAccountPortfolio(advisor, investor, account):
         # print(str(projection[index])+'%')
         temp['Projected_Value'] = calculateMarketValue(investor, i['Description'], str(projection[index])+'%')
         if temp['Market_Value'] > temp['Projected_Value']:
-            temp['Up/Down'] = 'Down'
+            temp['upDownIndicator'] = 'Down'
         elif temp['Market_Value'] < temp['Projected_Value']:
-            temp['Up/Down'] = 'Up'
+            temp['upDownIndicator'] = 'Up'
         else:
-            temp['Up/Down'] = 'No Impact'
-        temp['Percentage_Impact'] = percentageImpact(temp['Market_Value'], temp['Projected_Value'])
+            temp['upDownIndicator'] = 'No Impact'
+        temp['Percentage_Impact'] = str(percentageImpact(temp['Market_Value'], temp['Projected_Value'])) + "%"
         # portfolio_data[i['Description']] = temp.copy()
         temp2.append(temp.copy())
         total_market_value += temp['Market_Value']
@@ -46,8 +46,8 @@ def getAccountPortfolio(advisor, investor, account):
     temp['Instrument_Type'] = "Total"
     temp['Market_Value'] = total_market_value
     temp['Projected_Value'] = total_projected_value
-    temp['Up/Down'] = updn
-    temp['Percentage_Impact'] = percentageImpact(total_market_value, total_projected_value)
+    temp['upDownIndicator'] = updn
+    temp['Percentage_Impact'] = str(percentageImpact(total_market_value, total_projected_value)) + "%"
     temp2.append(temp.copy())
 
     portfolio_data["data"] = temp2.copy()

@@ -76,6 +76,18 @@ class ClientInstrumentData(Resource):
     def get(self,adv):
         return adv_investor_investments[adv]
 
+class AdvisorInstruments(Resource):
+    def get(self, adv):
+        return getAdvisorInstruments(adv)
+
+class FundProjection(Resource):
+    def get(self):
+        return fundProjection()
+
+class InstrumentData(Resource):
+    def get(self):
+        return getInstrumentData()
+
 api.add_resource(ClientList, '/<string:adv>/clientList')
 api.add_resource(MarketNews, '/<string:adv>/marketNews')
 api.add_resource(ClientEscalation, '/<string:adv>/clientEscalation')
@@ -84,5 +96,8 @@ api.add_resource(PortfolioData, '/portfolioData/<string:adv>/<string:client>/<in
 api.add_resource(MarketSignalImpact2, '/marketSignalImpact2')
 api.add_resource(MarketSignalImpact, '/marketSignalImpact')
 api.add_resource(ClientInstrumentData, '/clientInstrumentData/<string:adv>')
+api.add_resource(AdvisorInstruments, '/advisorInstruments/<string:adv>')
+api.add_resource(FundProjection, '/fundProjection')
+api.add_resource(InstrumentData, '/instrumentData')
 if __name__ == '__main__':
     app.run(debug=True)
