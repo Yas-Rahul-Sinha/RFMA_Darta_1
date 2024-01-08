@@ -1,61 +1,107 @@
-import math
-import pandas as pd
-portfolios = pd.read_excel('WM Manager Dashboard Data SetV2.xlsx', sheet_name='Portfolio')
-master_price = pd.read_excel('WM Manager Dashboard Data SetV2.xlsx', sheet_name='Instrument Master Price')
-portfolios = portfolios.transpose()
-for port in portfolios:
-    index = 0
-    for ins in master_price["Security_Description"]:
-        if(portfolios[port]["Security_Description"] == ins):
-            portfolios[port]["Market_Value"] = round(portfolios[port]["Units"]*master_price["Price-As of date"][index],2)
-            portfolios[port]["Market_Value_as_of_31st_Dec_2022"] = round(portfolios[port]["Units"]*master_price["Price 12/31/2022"][index],2)
-            portfolios[port]["Market_Value_as_of_30th_Sept_2022"] = round(portfolios[port]["Units"]*master_price["Price 09/30/2022"][index],2)
-            portfolios[port]["Market_Value_as_of_30th_June_2022"] = round(portfolios[port]["Units"]*master_price["Price 06/30/2022"][index],2)
-            portfolios[port]["Market_Value_as_of_31th_March_2022"] = round(portfolios[port]["Units"]*master_price["Price 03/31/2022"][index],2)
-            portfolios[port]["Market_Value_as_of_31th_Dec_2021"] = round(portfolios[port]["Units"]*master_price["Price 12/31/2021"][index],2)
-            portfolios[port]["Market_Value_as_of_31th_Dec_2020"] = round(portfolios[port]["Units"]*master_price["Price 12/31/2020"][index],2)
-            break
-        index+=1
-    if math.isnan(portfolios[port]["Market_Value"]):
-        portfolios[port]["Market_Value"] = 0
-portfolios = portfolios.transpose()
-# print(portfolios["Market Value"][5])
-# portfolio = pd.read_excel('WM Manager Dashboard Data SetV2.xlsx', sheet_name='Portfolio', usecols=[0, 1, 5, 11])
-temp = portfolios.Advisor[0]
-rows, columns = portfolios.shape
-# print(rows)
-# print(temp)
-temp2 = portfolios["Investor_Name"][0]
-bookSum = 0
-martSum = 0
-advisor = {}
-investor = []
-iterator = 0
-for ind in portfolios.Advisor:
-    if ind != temp or iterator == rows-1:
-        # print(ind != temp)
-        investor.append({"Investor":temp2,"Book_Value": round(bookSum,2), "MM": round(martSum,2), "Country_of_Domicile": portfolios["Account_Currency"][iterator]})
-        temp2 = portfolios["Investor_Name"][iterator]
-        martSum = round(portfolios["Market_Value"][iterator],2)
-        bookSum = round(portfolios["Account_Investment_Book_Value"][iterator],2)
-        advisor.update({temp:investor.copy()})
-        # print(advisor)
-        temp = ind
-        # print(temp)
-        investor.clear()
-    elif ind == temp:
-        if temp2 != portfolios["Investor_Name"][iterator]:
-            # print(temp2)
-            investor.append({"Investor":temp2,"Book_Value": round(bookSum,2), "MM": round(martSum,2), "Country_of_Domicile": portfolios["Account_Currency"][iterator]})
-            temp2 = portfolios["Investor_Name"][iterator]
-            # print(investor)
-            martSum = round(portfolios["Market_Value"][iterator],2)
-            bookSum = round(portfolios["Account_Investment_Book_Value"][iterator],2)
-        elif temp2 == portfolios["Investor_Name"][iterator]:
-            martSum += round(portfolios["Market_Value"][iterator],2)
-            bookSum += round(portfolios["Account_Investment_Book_Value"][iterator],2)
-            # print(bookSum)
+from flask import Flask, g, abort, current_app, request, url_for
+from werkzeug.exceptions import HTTPException, InternalServerError
+from flask_restful import Resource, Api
+from datetime import datetime
+from functools import wraps
+import threading
+import time
+import uuid
 
-    iterator += 1
-# for i in advisor["Advisor 1"]:
-#     print(i)
+tasks = {}
+
+app = Flask(__name__)
+api = Api(app)
+
+
+@app.before_first_request
+def before_first_request():
+    """Start a background thread that cleans up old tasks."""
+    def clean_old_tasks():
+        """
+        This function cleans up old tasks from our in-memory data structure.
+        """
+        global tasks
+        while True:
+            # Only keep tasks that are running or that finished less than 5
+            # minutes ago.
+            five_min_ago = datetime.timestamp(datetime.utcnow()) - 5 * 60
+            tasks = {task_id: task for task_id, task in tasks.items()
+                     if 'completion_timestamp' not in task or task['completion_timestamp'] > five_min_ago}
+            time.sleep(60)
+
+    if not current_app.config['TESTING']:
+        thread = threading.Thread(target=clean_old_tasks)
+        thread.start()
+
+
+def async_api(wrapped_function):
+    @wraps(wrapped_function)
+    def new_function(*args, **kwargs):
+        def task_call(flask_app, environ):
+            # Create a request context similar to that of the original request
+            # so that the task can have access to flask.g, flask.request, etc.
+            with flask_app.request_context(environ):
+                try:
+                    tasks[task_id]['return_value'] = wrapped_function(*args, **kwargs)
+                except HTTPException as e:
+                    tasks[task_id]['return_value'] = current_app.handle_http_exception(e)
+                except Exception as e:
+                    # The function raised an exception, so we set a 500 error
+                    tasks[task_id]['return_value'] = InternalServerError()
+                    if current_app.debug:
+                        # We want to find out if something happened so reraise
+                        raise
+                finally:
+                    # We record the time of the response, to help in garbage
+                    # collecting old tasks
+                    tasks[task_id]['completion_timestamp'] = datetime.timestamp(datetime.utcnow())
+
+                    # close the database session (if any)
+
+        # Assign an id to the asynchronous task
+        task_id = uuid.uuid4().hex
+
+        # Record the task, and then launch it
+        tasks[task_id] = {'task_thread': threading.Thread(
+            target=task_call, args=(current_app._get_current_object(),
+                               request.environ))}
+        tasks[task_id]['task_thread'].start()
+
+        # Return a 202 response, with a link that the client can use to
+        # obtain task status
+        print(url_for('gettaskstatus', task_id=task_id))
+        return 'accepted', 202, {'Location': url_for('gettaskstatus', task_id=task_id)}
+    return new_function
+
+
+class GetTaskStatus(Resource):
+    def get(self, task_id):
+        """
+        Return status about an asynchronous task. If this request returns a 202
+        status code, it means that task hasn't finished yet. Else, the response
+        from the task is returned.
+        """
+        task = tasks.get(task_id)
+        if task is None:
+            abort(404)
+        if 'return_value' not in task:
+            return '', 202, {'Location': url_for('gettaskstatus', task_id=task_id)}
+        return task['return_value']
+
+
+class CatchAll(Resource):
+    @async_api
+    def get(self, path='test'):
+        # perform some intensive processing
+        print("starting processing task, path: '%s'" % path)
+        time.sleep(10)
+        print("completed processing task, path: '%s'" % path)
+        return f'The answer is: {path}'
+
+
+api.add_resource(CatchAll, '/<path:path>', '/')
+api.add_resource(GetTaskStatus, '/status/<task_id>')
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
